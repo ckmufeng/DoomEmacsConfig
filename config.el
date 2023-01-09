@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "ckmufeng"
+      user-mail-address "chenkai.bupt.cq@gamil.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -139,12 +139,28 @@
 
 (require 'org-board)
 
-;(use-package perspective
-;  :bind
-;  ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
-;  :custom
-;  (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
-;  :init
-;  (persp-mode))
+(use-package perspective
+  :bind
+  ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+  :custom
+  (persp-mode-prefix-key (kbd "C-c M-p"))  ; pick your own prefix key here
+  :init
+  (persp-mode))
 
 (require 'monolith)
+
+
+(use-package lsp-mode
+  :hook ((prog-mode . lsp-deferred))
+  :commands (lsp lsp-deferred)
+  :config
+  (progn
+    (lsp-register-client
+      (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                       :major-modes '(c-mode c++-mode)
+                       :remote? t
+                       :server-id 'clangd-remote
+      )
+    )
+  )
+)
